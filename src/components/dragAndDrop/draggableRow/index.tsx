@@ -24,6 +24,7 @@ const DraggableRow: React.FC<RowProps> = ({ id, label }) => {
     transition,
     cursor: "grab",
     width: "100%",
+    touchAction: "none",
     ...(isDragging ? { position: "relative", zIndex: 9999 } : {}),
   };
 
