@@ -20,6 +20,10 @@ const Button = styled.button<ButtonProps>`
     background-color: ${({ color }) =>
       color ? darkenColor(color, 0.1) : "#4b00b5"};
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 function darkenColor(hex: string, amount: number) {

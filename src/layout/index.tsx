@@ -40,6 +40,11 @@ const ActionsContainer = styled.div`
   align-items: center;
   column-gap: 15px;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    row-gap: 15px;
+  }
 `;
 
 function Layout() {
