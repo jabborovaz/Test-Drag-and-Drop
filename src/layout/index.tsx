@@ -71,7 +71,6 @@ function Layout() {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    // Найдём блок, внутри которого происходит drag
     setItemsState((prev) =>
       prev.map((block) => {
         const ids = block.innerItems.map((i) => i.id);
