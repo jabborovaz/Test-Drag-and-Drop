@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import Box from "@/components/box";
 import RowCell from "@/components/rowCell";
+import { items } from "@/constants/items";
+import type { InnerItem, BlockItem } from "@/constants/items";
 
 const Container = styled.div`
   width: 90%;
@@ -12,15 +14,21 @@ const Container = styled.div`
   column-gap: 15px;
   margin: 20px auto;
   padding: 10px 15px;
-  background: oklch(87.1% 0.006 286.286);
+  background: oklch(92.2% 0 0);
 `;
 
 function Layout() {
   return (
     <Container>
-      <Box>
-        <RowCell label="Свойство 3" />
-      </Box>
+      {items?.map(({ name, innerItems }: BlockItem) => {
+        return (
+          <Box key={name}>
+            {innerItems?.map(({ id, name }: InnerItem) => {
+              return <RowCell key={id} label={name} />;
+            })}
+          </Box>
+        );
+      })}
     </Container>
   );
 }

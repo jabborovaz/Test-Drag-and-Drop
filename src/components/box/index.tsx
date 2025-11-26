@@ -2,7 +2,7 @@ import styled from "styled-components";
 import type { ReactNode } from "react";
 
 const Block = styled.div`
-  width: 45%;
+  width: 47%;
   display: flex;
   flex-direction: column;
   row-gap: 20px;

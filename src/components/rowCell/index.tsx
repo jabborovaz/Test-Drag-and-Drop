@@ -7,7 +7,7 @@ const Cell = styled.div`
   height: 48px;
   display: flex;
   align-items: center;
-  background: oklch(90.5% 0.093 164.15);
+  background: oklch(76.5% 0.177 163.223);
   box-shadow: var(--shadow-lg);
 `;
 
