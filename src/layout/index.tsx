@@ -20,6 +20,7 @@ import {
 } from "@dnd-kit/sortable";
 
 const Container = styled.div`
+  position: relative; // важно
   width: 90%;
   max-width: 1050px;
   display: flex;
@@ -50,6 +51,7 @@ const ActionsContainer = styled.div`
 
 function Layout() {
   const [itemsState, setItemsState] = useState(items);
+  const [activeElem, setActiveElem] = useState<any>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -87,6 +89,28 @@ function Layout() {
         return block;
       })
     );
+    setActiveElem(null);
+  };
+
+  const onDragMove = (event: DragEndEvent) => {
+    const { collisions } = event;
+
+    if ((collisions?.length || 0) < 2) {
+      // @ts-ignore
+      const id: number = collisions?.find((el: any) => el)?.id;
+
+      const elWithItem = itemsState.find((el) =>
+        el.innerItems.some((item: { id: number }) => item.id === id)
+      );
+
+      if (elWithItem) {
+        const index = elWithItem.innerItems.findIndex(
+          (item: { id: number }) => item.id === id
+        );
+
+        setActiveElem({ index, id });
+      }
+    }
   };
 
   const handleRefreshClick = () => {
@@ -121,11 +145,12 @@ function Layout() {
         </Button>
       </ActionsContainer>
 
-      <Container>
+      <Container id="container">
         <DndContext
           sensors={sensors}
           modifiers={[restrictToVerticalAxis]}
           onDragEnd={onDragEnd}
+          onDragMove={onDragMove}
         >
           {itemsState.map((block) => (
             <Box key={block.name}>
@@ -133,8 +158,17 @@ function Layout() {
                 items={block.innerItems.map((i) => i.id)}
                 strategy={verticalListSortingStrategy}
               >
-                {block.innerItems.map((item) => (
-                  <DraggableRow key={item.id} id={item.id} label={item.name} />
+                {block.innerItems.map((item, i) => (
+                  <DraggableRow
+                    key={item.id}
+                    id={item.id}
+                    label={item.name}
+                    isActive={
+                      activeElem?.index === i && activeElem?.id !== item.id
+                        ? true
+                        : false
+                    }
+                  />
                 ))}
               </SortableContext>
             </Box>
