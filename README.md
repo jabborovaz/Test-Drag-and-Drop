@@ -1,73 +1,74 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Приложение для демонстрации Drag & Drop сортировки элементов с использованием React, Vite, @dnd-kit, styled-components и локального сохранения состояния через localStorage.
 
-Currently, two official plugins are available:
+Проект иллюстрирует, как можно сортировать элементы внутри разных блоков, сохранять результат и сбрасывать к исходным данным.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# 🚀 Установка и запуск
 
-## React Compiler
+1. Клонирование проекта
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+git clone (https://github.com/jabborovaz/Test-Drag-and-Drop.git)
+cd test-dnd
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. Установка зависимостей
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+3. Запуск в режиме разработки
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+npm run dev
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+4. Сборка проекта
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+npm run build
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+5. Предпросмотр собранного проекта
+
+npm run preview
+
+
+
+# 📁 Основные технологии проекта
+
+* React 19
+* TypeScript
+* styled-components
+* @dnd-kit/core, @dnd-kit/sortable, @dnd-kit/modifiers
+
+
+
+# 📌 Описание проекта
+
+В приложении реализовано два независимых блока, каждый из которых содержит список элементов.
+Эти элементы можно перетаскивать (drag-and-drop) внутри своего блока, не затрагивая соседний.
+
+Перетаскивание реализовано с использованием библиотеки @dnd-kit, а визуальная часть — через styled-components.
+
+Каждая строка:
+
+* перетаскивается только внутри своего контейнера;
+
+* имеет визуальное выделение при захвате и перемещении;
+
+* сохраняет новое положение в состоянии.
+
+
+
+## 🔧 Управление состоянием
+
+1. Сохранить
+
+Сохраняет текущий порядок элементов обоих блоков в localStorage.
+После обновления страницы элементы остаются в сохранённом порядке.
+
+2. Восстановить
+
+Возвращает элементы в исходный (статический) порядок,
+но не очищает localStorage — данные в нём остаются.
+
+3. Очистить
+
+Полностью удаляет данные из localStorage
+и восстанавливает списки в изначальный порядок, как после первого запуска.
