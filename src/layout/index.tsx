@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Box from "@/components/box";
 import { items } from "@/constants/items";
 import DraggableRow from "@/components/dragAndDrop/draggableRow";
-
+import Button from "@/components/ui/ownBtn";
 import {
   DndContext,
   PointerSensor,
@@ -29,6 +29,17 @@ const Container = styled.div`
   margin: 20px auto;
   padding: 10px 15px;
   background: oklch(92.2% 0 0);
+`;
+
+const ActionsContainer = styled.div`
+  width: 90%;
+  max-width: 1050px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 15px;
+  justify-content: center;
 `;
 
 function Layout() {
@@ -63,27 +74,60 @@ function Layout() {
       })
     );
   };
+
+  const handleRefreshClick = () => {
+    setItemsState(items);
+  };
+
+  const handleSave = () => {
+    localStorage.setItem("items", JSON.stringify(itemsState));
+  };
+
+  const handleClear = () => {
+    localStorage.removeItem("items");
+    setItemsState(items);
+  };
+
+  useEffect(() => {
+    const localItems = localStorage.getItem("items");
+
+    if (localItems) {
+      setItemsState(JSON.parse(localItems));
+    }
+  }, []);
   return (
-    <Container>
-      <DndContext
-        sensors={sensors}
-        modifiers={[restrictToVerticalAxis]}
-        onDragEnd={onDragEnd}
-      >
-        {itemsState.map((block) => (
-          <Box key={block.name}>
-            <SortableContext
-              items={block.innerItems.map((i) => i.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              {block.innerItems.map((item) => (
-                <DraggableRow key={item.id} id={item.id} label={item.name} />
-              ))}
-            </SortableContext>
-          </Box>
-        ))}
-      </DndContext>
-    </Container>
+    <>
+      <ActionsContainer>
+        <Button color="#28a745" onClick={handleSave}>
+          Сохранить
+        </Button>
+        <Button onClick={handleRefreshClick}>Восстановить</Button>
+        <Button color="#ff6347" onClick={handleClear}>
+          Очистить
+        </Button>
+      </ActionsContainer>
+
+      <Container>
+        <DndContext
+          sensors={sensors}
+          modifiers={[restrictToVerticalAxis]}
+          onDragEnd={onDragEnd}
+        >
+          {itemsState.map((block) => (
+            <Box key={block.name}>
+              <SortableContext
+                items={block.innerItems.map((i) => i.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {block.innerItems.map((item) => (
+                  <DraggableRow key={item.id} id={item.id} label={item.name} />
+                ))}
+              </SortableContext>
+            </Box>
+          ))}
+        </DndContext>
+      </Container>
+    </>
   );
 }
 

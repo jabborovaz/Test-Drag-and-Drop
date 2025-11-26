@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import RowCell from "@/components/rowCell";
@@ -8,6 +9,7 @@ interface RowProps {
 }
 
 const DraggableRow: React.FC<RowProps> = ({ id, label }) => {
+  const [isPressed, setIsPressed] = useState(false);
   const {
     attributes,
     listeners,
@@ -26,8 +28,16 @@ const DraggableRow: React.FC<RowProps> = ({ id, label }) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <RowCell label={label} />
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      onMouseLeave={() => setIsPressed(false)}
+    >
+      <RowCell label={label} isDragging={isDragging || isPressed} />
     </div>
   );
 };
